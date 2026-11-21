@@ -1,0 +1,40 @@
+name: Release package
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build source zip
+        run: |
+          VER=$(tr -d '[:space:]' < VERSION)
+          NAME="CamMIDI-v${VER}-max"
+          mkdir -p "dist/$NAME"
+          rsync -a --exclude node_modules --exclude dist --exclude .git \
+            --exclude '*.log' --exclude preview*.jpg --exclude .crash \
+            ./ "dist/$NAME/"
+          (cd dist && zip -r "$NAME.zip" "$NAME")
+          echo "ASSET=dist/$NAME.zip" >> "$GITHUB_ENV"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CamMIDI-source
+          path: dist/*.zip
+
+      - name: Attach to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.zip
+          generate_release_notes: true
+          fail_on_unmatched_files: true

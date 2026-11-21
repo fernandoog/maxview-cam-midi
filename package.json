@@ -1,0 +1,21 @@
+{
+  "name": "maxview-cam-midi",
+  "version": "1.0.0",
+  "description": "Any system camera → motion MIDI (Max / Node for Max) — CamMIDI v1.00",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fernandoog/maxview-cam-midi.git"
+  },
+  "scripts": {
+    "postinstall": "node -e \"try{require('fs').writeFileSync('node_modules/.cammidi_installed',new Date().toISOString())}catch(e){}\""
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "sharp": "^0.33.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
