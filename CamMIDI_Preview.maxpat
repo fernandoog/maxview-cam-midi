@@ -29,7 +29,7 @@
           "id": "pic",
           "maxclass": "fpic",
           "varname": "pic",
-          "pic": "D:/Dv/Repo/Android/MaxView/MaxViewInstrument/preview_a.jpg",
+          "pic": "black.jpg",
           "autofit": 1,
           "patching_rect": [
             0.0,
@@ -392,7 +392,7 @@
         "box": {
           "id": "mread",
           "maxclass": "message",
-          "text": "read D:/Dv/Repo/Android/MaxView/MaxViewInstrument/preview_a.jpg",
+          "text": "read black.jpg",
           "patching_rect": [
             200.0,
             930.0,
@@ -470,146 +470,278 @@
     "lines": [
       {
         "patchline": {
-          "source": ["btn_fs", 0],
-          "destination": ["sel_fs", 0]
+          "source": [
+            "btn_fs",
+            0
+          ],
+          "destination": [
+            "sel_fs",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["btn_win", 0],
-          "destination": ["sel_win", 0]
+          "source": [
+            "btn_win",
+            0
+          ],
+          "destination": [
+            "sel_win",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["btn_m1", 0],
-          "destination": ["sel_m1", 0]
+          "source": [
+            "btn_m1",
+            0
+          ],
+          "destination": [
+            "sel_m1",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["btn_m2", 0],
-          "destination": ["sel_m2", 0]
+          "source": [
+            "btn_m2",
+            0
+          ],
+          "destination": [
+            "sel_m2",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["sel_fs", 0],
-          "destination": ["msg_full", 0]
+          "source": [
+            "sel_fs",
+            0
+          ],
+          "destination": [
+            "msg_full",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["sel_win", 0],
-          "destination": ["msg_win", 0]
+          "source": [
+            "sel_win",
+            0
+          ],
+          "destination": [
+            "msg_win",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["sel_m1", 0],
-          "destination": ["msg_m1", 0]
+          "source": [
+            "sel_m1",
+            0
+          ],
+          "destination": [
+            "msg_m1",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["sel_m2", 0],
-          "destination": ["msg_m2", 0]
+          "source": [
+            "sel_m2",
+            0
+          ],
+          "destination": [
+            "msg_m2",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["msg_full", 0],
-          "destination": ["winjs", 0]
+          "source": [
+            "msg_full",
+            0
+          ],
+          "destination": [
+            "winjs",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["msg_win", 0],
-          "destination": ["winjs", 0]
+          "source": [
+            "msg_win",
+            0
+          ],
+          "destination": [
+            "winjs",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["msg_m1", 0],
-          "destination": ["winjs", 0]
+          "source": [
+            "msg_m1",
+            0
+          ],
+          "destination": [
+            "winjs",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["msg_m2", 0],
-          "destination": ["winjs", 0]
+          "source": [
+            "msg_m2",
+            0
+          ],
+          "destination": [
+            "winjs",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["winjs", 0],
-          "destination": ["tp", 0]
+          "source": [
+            "winjs",
+            0
+          ],
+          "destination": [
+            "tp",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["boot", 0],
-          "destination": ["winjs", 0]
+          "source": [
+            "boot",
+            0
+          ],
+          "destination": [
+            "winjs",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["vlb", 0],
-          "destination": ["vone", 0]
+          "source": [
+            "vlb",
+            0
+          ],
+          "destination": [
+            "vone",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["vlb", 0],
-          "destination": ["boot", 0]
+          "source": [
+            "vlb",
+            0
+          ],
+          "destination": [
+            "boot",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["vone", 0],
-          "destination": ["tgl_fx", 0]
+          "source": [
+            "vone",
+            0
+          ],
+          "destination": [
+            "tgl_fx",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["tgl_fx", 0],
-          "destination": ["mfx", 0]
+          "source": [
+            "tgl_fx",
+            0
+          ],
+          "destination": [
+            "mfx",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["mfx", 0],
-          "destination": ["sfx", 0]
+          "source": [
+            "mfx",
+            0
+          ],
+          "destination": [
+            "sfx",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["lm", 0],
-          "destination": ["metro", 0]
+          "source": [
+            "lm",
+            0
+          ],
+          "destination": [
+            "mread",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["metro", 0],
-          "destination": ["mread", 0]
+          "source": [
+            "mread",
+            0
+          ],
+          "destination": [
+            "pic",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["mread", 0],
-          "destination": ["pic", 0]
+          "source": [
+            "r_frame",
+            0
+          ],
+          "destination": [
+            "spr",
+            0
+          ]
         }
       },
       {
         "patchline": {
-          "source": ["r_frame", 0],
-          "destination": ["spr", 0]
-        }
-      },
-      {
-        "patchline": {
-          "source": ["spr", 0],
-          "destination": ["pic", 0]
+          "source": [
+            "spr",
+            0
+          ],
+          "destination": [
+            "pic",
+            0
+          ]
         }
       }
     ]

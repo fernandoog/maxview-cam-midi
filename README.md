@@ -23,15 +23,17 @@ Basado en el motor de [MAX-VIEW Microscope MIDI](https://github.com/fernandoog/m
    ```
    O abre `CamMIDI.maxpat` en Max.
 3. Primera vez: el patch instala deps si hace falta (`sharp` + `ffmpeg-static`).
-4. Auto-start usa la primera cámara. **next** cambia de dispositivo.
-5. Solo suena con **movimiento** delante de la cámara.
+4. El desplegable **Cámara** lista todos los dispositivos DirectShow; arranca con el **primero** (por defecto).
+5. Si no hay cámaras: el menú muestra “(sin cámaras)” y el preview queda en **pantalla negra**.
+6. Solo suena con **movimiento** delante de la cámara.
 
 ## Controles
 
 | Acción | Efecto |
 |--------|--------|
 | start / stop | Arranca / para captura + MIDI |
-| next | Siguiente cámara DirectShow |
+| Cámara (umenu) | Elige cualquier cámara del sistema |
+| devices | Refresca la lista del desplegable |
 | Video | Abre preview (Full / Win / Mon1 / Mon2) |
 
 ### Mensajes a `node.script`

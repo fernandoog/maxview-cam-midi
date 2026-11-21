@@ -573,9 +573,64 @@ function feedMjpeg(chunk, state) {
   }
 }
 
+async function makeBlackJpeg() {
+  ensureDeps();
+  return sharp({
+    create: {
+      width: 1280,
+      height: 720,
+      channels: 3,
+      background: { r: 0, g: 0, b: 0 },
+    },
+  })
+    .jpeg({ quality: 70 })
+    .toBuffer();
+}
+
+async function writeBlackPreview() {
+  try {
+    const jpg = await makeBlackJpeg();
+    // limpiar A/B para que no quede un frame viejo (p.ej. microscopio) en el flip
+    for (const p of PREVIEW_PATHS) {
+      try {
+        fs.writeFileSync(p, jpg);
+      } catch (_) {}
+    }
+    try {
+      fs.writeFileSync(PREVIEW_PATH, jpg);
+    } catch (_) {}
+    lastPreviewT = 0;
+    previewEnabled = true;
+    Max.outlet("frame", PREVIEW_PATHS[0].replace(/\\/g, "/"));
+  } catch (e) {
+    fileLog("black preview: " + e.message);
+  }
+}
+
+function pushCamMenu() {
+  Max.outlet("cammenu", "clear");
+  if (!devices.length) {
+    Max.outlet("cammenu", "append", "(sin cámaras)");
+    Max.outlet("cammenu", "set", 0);
+    Max.outlet("devices");
+    return;
+  }
+  for (let i = 0; i < devices.length; i++) {
+    Max.outlet("cammenu", "append", devices[i]);
+  }
+  if (deviceIndex < 0 || deviceIndex >= devices.length) deviceIndex = 0;
+  Max.outlet("cammenu", "set", deviceIndex);
+  Max.outlet("devices", ...devices);
+}
+
 function listDevicesWin() {
   return new Promise((resolve, reject) => {
-    ensureDeps();
+    try {
+      ensureDeps();
+    } catch (e) {
+      reject(e);
+      return;
+    }
     const args = ["-hide_banner", "-list_devices", "true", "-f", "dshow", "-i", "dummy"];
     execFile(
       ffmpegPath,
@@ -590,22 +645,30 @@ function listDevicesWin() {
         while ((m = re.exec(text))) {
           if (found.indexOf(m[1]) < 0) found.push(m[1]);
         }
-        // alternate format
         if (!found.length) {
           const re2 = /\[dshow[^\]]*\]\s*"([^"]+)"/gi;
           while ((m = re2.exec(text))) {
-            if (/alternative name/i.test(text.slice(Math.max(0, m.index - 40), m.index))) continue;
+            if (/alternative name/i.test(text.slice(Math.max(0, m.index - 40), m.index)))
+              continue;
             if (found.indexOf(m[1]) < 0) found.push(m[1]);
           }
         }
         devices = found;
-        if (!devices.length) {
-          reject(new Error("No se encontraron cámaras DirectShow"));
-          return;
-        }
         if (deviceIndex >= devices.length) deviceIndex = 0;
-        status("cámaras: " + devices.map((d, i) => i + "=" + d).join(" | "));
-        Max.outlet("devices", ...devices);
+        pushCamMenu();
+        if (!devices.length) {
+          status("sin cámaras — pantalla negra");
+          writeBlackPreview();
+        } else {
+          status(
+            "cámaras " +
+              devices.length +
+              " · default [" +
+              deviceIndex +
+              "] " +
+              devices[deviceIndex]
+          );
+        }
         resolve(devices);
       }
     );
@@ -614,7 +677,11 @@ function listDevicesWin() {
 
 function listDevices() {
   if (process.platform === "win32") return listDevicesWin();
-  return Promise.reject(new Error("Solo Windows dshow por ahora"));
+  devices = [];
+  pushCamMenu();
+  writeBlackPreview();
+  status("sin cámaras (plataforma no Windows)");
+  return Promise.resolve(devices);
 }
 
 function currentDeviceName() {
@@ -715,6 +782,7 @@ async function start() {
     ensureDeps();
   } catch (e) {
     status("ERROR: " + e.message);
+    await writeBlackPreview();
     return;
   }
   if (running) {
@@ -723,22 +791,34 @@ async function start() {
   }
 
   try {
-    if (!devices.length) await listDevices();
+    await listDevices();
   } catch (e) {
     status("ERROR devices: " + e.message);
+    devices = [];
+    pushCamMenu();
+    await writeBlackPreview();
     return;
   }
 
   const name = currentDeviceName();
+  if (!name) {
+    running = false;
+    await writeBlackPreview();
+    status("sin cámaras — elige otra cuando haya dispositivo");
+    return;
+  }
+
   running = true;
   prevGray = null;
   notesFired = 0;
   framesSinceStart = 0;
+  await writeBlackPreview();
   ensureWinMidi();
   try {
     startCapture(name);
   } catch (e) {
     running = false;
+    await writeBlackPreview();
     status("start failed: " + e.message);
     return;
   }
@@ -782,22 +862,26 @@ function freeze() {
 
 function setDevice(v) {
   const s = String(v);
+  if (!devices.length) {
+    pushCamMenu();
+    writeBlackPreview();
+    status("sin cámaras");
+    return;
+  }
   let idx = parseInt(s, 10);
-  if (!Number.isNaN(idx) && String(idx) === s.trim()) {
-    if (!devices.length) {
-      deviceIndex = idx;
-      status("device index=" + idx + " (lista pendiente)");
-      return;
-    }
+  if (!Number.isNaN(idx) && /^\s*\d+\s*$/.test(s)) {
     if (idx < 0 || idx >= devices.length) {
       status("device fuera de rango 0.." + (devices.length - 1));
+      return;
+    }
+    if (idx === deviceIndex && running) {
+      status("ya en cam[" + idx + "] " + devices[idx]);
       return;
     }
     deviceIndex = idx;
   } else {
     const found = devices.findIndex((d) => d.toLowerCase() === s.toLowerCase());
     if (found < 0) {
-      // partial match
       const f2 = devices.findIndex((d) => d.toLowerCase().indexOf(s.toLowerCase()) >= 0);
       if (f2 < 0) {
         status("cámara no encontrada: " + s);
@@ -806,10 +890,12 @@ function setDevice(v) {
       deviceIndex = f2;
     } else deviceIndex = found;
   }
+  Max.outlet("cammenu", "set", deviceIndex);
   status("device=" + deviceIndex + " " + (devices[deviceIndex] || ""));
-  if (running) {
+  const was = running;
+  if (was) {
     stop();
-    setTimeout(() => start(), 400);
+    setTimeout(() => start(), 350);
   }
 }
 
@@ -840,19 +926,27 @@ function markReady() {
   status("READY — listando cámaras…");
   Max.outlet("ready");
   listDevices()
-    .then(() => {
+    .then((list) => {
       if (!autoStarted) {
         autoStarted = true;
         setTimeout(() => {
           try {
-            start();
+            if (list && list.length) start();
+            else {
+              writeBlackPreview();
+              status("sin cámaras — pantalla negra");
+            }
           } catch (e) {
             status("auto-start fail: " + e.message);
           }
         }, 500);
       }
     })
-    .catch((e) => status("WARN: " + e.message));
+    .catch((e) => {
+      status("WARN: " + e.message);
+      pushCamMenu();
+      writeBlackPreview();
+    });
 }
 
 async function bootInstallThenReady() {

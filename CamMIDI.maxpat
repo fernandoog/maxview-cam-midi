@@ -13,7 +13,7 @@
       60.0,
       60.0,
       440.0,
-      320.0
+      380.0
     ],
     "openinpresentation": 1,
     "toolbarvisible": 0,
@@ -179,39 +179,6 @@
       },
       {
         "box": {
-          "id": "btn_cam",
-          "maxclass": "message",
-          "text": "next",
-          "fontsize": 14.0,
-          "bgcolor": [
-            0.55,
-            0.4,
-            0.15,
-            1.0
-          ],
-          "textcolor": [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-          ],
-          "patching_rect": [
-            235.0,
-            480.0,
-            55.0,
-            32.0
-          ],
-          "presentation": 1,
-          "presentation_rect": [
-            233.0,
-            84.0,
-            55.0,
-            32.0
-          ]
-        }
-      },
-      {
-        "box": {
           "id": "btn_video",
           "maxclass": "message",
           "text": "Video",
@@ -229,17 +196,125 @@
             1.0
           ],
           "patching_rect": [
-            300.0,
+            235.0,
             480.0,
             70.0,
             32.0
           ],
           "presentation": 1,
           "presentation_rect": [
-            298.0,
+            233.0,
             84.0,
             70.0,
             32.0
+          ]
+        }
+      },
+      {
+        "box": {
+          "id": "btn_refresh",
+          "maxclass": "message",
+          "text": "devices",
+          "fontsize": 12.0,
+          "bgcolor": [
+            0.35,
+            0.35,
+            0.4,
+            1.0
+          ],
+          "textcolor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "patching_rect": [
+            315.0,
+            480.0,
+            40.0,
+            32.0
+          ],
+          "presentation": 1,
+          "presentation_rect": [
+            313.0,
+            84.0,
+            40.0,
+            32.0
+          ]
+        }
+      },
+      {
+        "box": {
+          "id": "lab_cam",
+          "maxclass": "message",
+          "text": "Cámara",
+          "fontsize": 11.0,
+          "bgcolor": [
+            0.22,
+            0.22,
+            0.25,
+            1.0
+          ],
+          "textcolor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "patching_rect": [
+            20.0,
+            520.0,
+            70.0,
+            20.0
+          ],
+          "presentation": 1,
+          "presentation_rect": [
+            16.0,
+            130.0,
+            70.0,
+            20.0
+          ]
+        }
+      },
+      {
+        "box": {
+          "id": "cam_menu",
+          "maxclass": "umenu",
+          "varname": "cam_menu",
+          "items": [
+            "(buscando…)"
+          ],
+          "fontsize": 12.0,
+          "bgcolor": [
+            0.92,
+            0.92,
+            0.9,
+            1.0
+          ],
+          "textcolor": [
+            0.05,
+            0.05,
+            0.08,
+            1.0
+          ],
+          "elementcolor": [
+            0.25,
+            0.45,
+            0.75,
+            1.0
+          ],
+          "patching_rect": [
+            20.0,
+            545.0,
+            400.0,
+            24.0
+          ],
+          "presentation": 1,
+          "presentation_rect": [
+            16.0,
+            152.0,
+            400.0,
+            26.0
           ]
         }
       },
@@ -263,14 +338,14 @@
           ],
           "patching_rect": [
             20.0,
-            530.0,
+            580.0,
             60.0,
             20.0
           ],
           "presentation": 1,
           "presentation_rect": [
             16.0,
-            138.0,
+            188.0,
             60.0,
             20.0
           ]
@@ -296,14 +371,14 @@
           ],
           "patching_rect": [
             20.0,
-            555.0,
+            605.0,
             380.0,
             48.0
           ],
           "presentation": 1,
           "presentation_rect": [
             16.0,
-            160.0,
+            210.0,
             400.0,
             48.0
           ]
@@ -329,14 +404,14 @@
           ],
           "patching_rect": [
             20.0,
-            615.0,
+            665.0,
             50.0,
             20.0
           ],
           "presentation": 1,
           "presentation_rect": [
             16.0,
-            218.0,
+            268.0,
             50.0,
             20.0
           ]
@@ -362,14 +437,14 @@
           ],
           "patching_rect": [
             20.0,
-            640.0,
+            690.0,
             380.0,
             32.0
           ],
           "presentation": 1,
           "presentation_rect": [
             16.0,
-            240.0,
+            290.0,
             400.0,
             34.0
           ]
@@ -379,7 +454,7 @@
         "box": {
           "id": "foot",
           "maxclass": "message",
-          "text": "Cam / Video → Full Win Mon · movimiento→MIDI",
+          "text": "Desplegable = cámara · Video → Full/Win/Mon",
           "fontsize": 11.0,
           "bgcolor": [
             0.14,
@@ -395,15 +470,41 @@
           ],
           "patching_rect": [
             20.0,
-            685.0,
-            280.0,
+            735.0,
+            320.0,
             22.0
           ],
           "presentation": 1,
           "presentation_rect": [
             16.0,
-            284.0,
-            280.0,
+            334.0,
+            320.0,
+            22.0
+          ]
+        }
+      },
+      {
+        "box": {
+          "id": "msg_device",
+          "maxclass": "message",
+          "text": "device $1",
+          "patching_rect": [
+            450.0,
+            545.0,
+            80.0,
+            22.0
+          ]
+        }
+      },
+      {
+        "box": {
+          "id": "msg_refresh",
+          "maxclass": "message",
+          "text": "devices",
+          "patching_rect": [
+            450.0,
+            480.0,
+            60.0,
             22.0
           ]
         }
@@ -451,7 +552,7 @@
         "box": {
           "id": "route",
           "maxclass": "newobj",
-          "text": "route midi status levels ready frame fx noteui",
+          "text": "route midi status levels ready frame fx noteui cammenu",
           "patching_rect": [
             20.0,
             80.0,
@@ -811,14 +912,32 @@
       },
       {
         "patchline": {
-          "source": ["btn_cam", 0],
+          "source": ["btn_video", 0],
+          "destination": ["sel_video", 0]
+        }
+      },
+      {
+        "patchline": {
+          "source": ["btn_refresh", 0],
           "destination": ["node", 0]
         }
       },
       {
         "patchline": {
-          "source": ["btn_video", 0],
-          "destination": ["sel_video", 0]
+          "source": ["cam_menu", 0],
+          "destination": ["msg_device", 0]
+        }
+      },
+      {
+        "patchline": {
+          "source": ["msg_device", 0],
+          "destination": ["node", 0]
+        }
+      },
+      {
+        "patchline": {
+          "source": ["route", 7],
+          "destination": ["cam_menu", 0]
         }
       },
       {
